@@ -61,7 +61,7 @@ class _SensorDashboardState extends State<SensorDashboard> {
         ),
       ),
       body: ListView(
-        children: [
+        children: <Widget>[
           // Temperature & Humidity Box
           _buildTempHumidityBox(),
 
@@ -70,6 +70,9 @@ class _SensorDashboardState extends State<SensorDashboard> {
 
           // Planting Date Box
           _buildPlantingDateBox(),
+
+          // Target Date Box
+          _buildTargetDateText(),
         ],
       ),
     );
@@ -144,8 +147,8 @@ class _SensorDashboardState extends State<SensorDashboard> {
           const SizedBox(height: 10),
           _buildStatusRow("WaterStatus 1", waterStatus1),
           _dividerLine(),
-          _buildStatusRow("WaterStatus 2", waterStatus2),
-          _dividerLine(),
+          // _buildStatusRow("WaterStatus 2", waterStatus2),
+          // _dividerLine(),
           _buildStatusRowWithImage(
             "Camera Status",
             "assets/images/camera.png",
@@ -230,15 +233,15 @@ class _SensorDashboardState extends State<SensorDashboard> {
         ],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Row(
-            children: const [
-              Icon(Icons.forest, color: Colors.green, size: 30),
+            children: [
+              Image.asset("assets/images/holidays.png", width: 50, height: 50),
               SizedBox(width: 15),
               Text(
                 "Planting Date",
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -256,6 +259,39 @@ class _SensorDashboardState extends State<SensorDashboard> {
               ),
             ],
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTargetDateText() {
+    DateTime targetDate = plantingDate.add(const Duration(days: 90));
+    int daysLeft = targetDate.difference(DateTime.now()).inDays;
+
+    return Container(
+      margin: const EdgeInsets.only(left: 13, right: 13, top: 4, bottom: 0),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25),
+        gradient: const LinearGradient(
+          colors: [Color(0xFFB0E194), Color(0xFFD2EFC7)],
+        ),
+        boxShadow: const [
+          BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 3)),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Image.asset("assets/images/calendar.png", width: 50, height: 50),
+          Text(
+            'Target Date: ',
+            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+          ),
+          Text(
+          ' ${daysLeft >= 0 ? '$daysLeft days left' : 'Passed'}',
+          style: const TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
+        ),
         ],
       ),
     );
